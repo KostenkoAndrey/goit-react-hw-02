@@ -1,0 +1,11 @@
+.feedCont{
+
+}
+
+.textcontent{
+    
+}
+
+.textcontent:not(:last-child){
+    margin-bottom: 8px;
+}
