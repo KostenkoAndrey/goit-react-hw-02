@@ -3,29 +3,29 @@ import './App.css'
 import Description from "./components/Description/Description"
 import Feedback from "./components/Feedback/Feedback"
 import Options from "./components/Options/Options"
+import Notification from "./components/Notification/Notification"
 
 const App = () => {
-const [feedCount, setFeedCount] = useState(JSON.parse(localStorage.getItem("Options"))??{good: 0, neutral: 0, bad: 0});
+const [feedCount, setFeedCount] = useState(JSON.parse(localStorage.getItem("Feedback"))??{good: 0, neutral: 0, bad: 0});
 const totalFeedback = feedCount.good + feedCount.neutral + feedCount.bad;
+const positive = Math.round((feedCount.good / totalFeedback) * 100);
 
-const updateFeedback = (feedbackType, event) => {
+const updateFeedback = (feedbackType) => {
 setFeedCount(prev => ({...prev,
 	[feedbackType]: prev[feedbackType] + 1}));
-	event.target.blur();
 };	
 
-const resetFeedback =(evt)=> {
-setFeedCount(prev => ({...prev, ...{good: 0, neutral: 0, bad: 0}}));
-evt.target.blur();
+const resetFeedback =()=> {
+setFeedCount({good: 0, neutral: 0, bad: 0});
 }
 
-useEffect(()=>localStorage.setItem("Options", JSON.stringify(feedCount)),[feedCount]);
+useEffect(()=>localStorage.setItem("Feedback", JSON.stringify(feedCount)),[feedCount]);
 
   return (
   <div className='container'>
 	<Description/>
 	<Options onReset={resetFeedback} onUpdate={updateFeedback} total={totalFeedback} />
-	<Feedback total={totalFeedback} {...feedCount}/>
+	{totalFeedback > 0 ? <Feedback total={totalFeedback} positiveFB={positive} {...feedCount}/> : <Notification/>}
   </div>
   )
 };
