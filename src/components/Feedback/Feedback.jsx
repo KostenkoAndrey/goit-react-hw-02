@@ -1,7 +1,6 @@
 import s from "./Feedback.module.css"
 
-const Feedback =({total, good, neutral, bad})=>{
-    
+const Feedback =({total, good, neutral, bad})=>{ 
 const positive = Math.round((good / total) * 100);
 return (<> {total > 0 ? <div className={s.feedCont}>
     <p className={s.textcontent}>Good: {good}</p>

@@ -1,25 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Description from "./components/Description/Description"
 import Feedback from "./components/Feedback/Feedback"
 import Options from "./components/Options/Options"
 
-
-
 const App = () => {
-const [feedCount, setFeedCount] = useState({good: 0, neutral: 0, bad: 0});
+const [feedCount, setFeedCount] = useState(JSON.parse(localStorage.getItem("Options"))??{good: 0, neutral: 0, bad: 0});
 const totalFeedback = feedCount.good + feedCount.neutral + feedCount.bad;
 
 const updateFeedback = (feedbackType, event) => {
-	setFeedCount(prev => ({...prev,
-		[feedbackType]: prev[feedbackType] + 1}));
-		event.target.blur();
+setFeedCount(prev => ({...prev,
+	[feedbackType]: prev[feedbackType] + 1}));
+	event.target.blur();
 };	
 
 const resetFeedback =(evt)=> {
-	setFeedCount(prev => ({...prev, ...{good: 0, neutral: 0, bad: 0}}));
-	evt.target.blur();
+setFeedCount(prev => ({...prev, ...{good: 0, neutral: 0, bad: 0}}));
+evt.target.blur();
 }
+
+useEffect(()=>localStorage.setItem("Options", JSON.stringify(feedCount)),[feedCount]);
 
   return (
   <div className='container'>
